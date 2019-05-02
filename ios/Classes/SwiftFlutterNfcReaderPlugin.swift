@@ -40,7 +40,7 @@ public class SwiftFlutterNfcReaderPlugin: NSObject, FlutterPlugin {
 extension SwiftFlutterNfcReaderPlugin {
     func activateNFC(_ instruction: String?) {
         // setup NFC session
-        nfcSession = NFCNDEFReaderSession(delegate: self, queue: DispatchQueue(label: "queueName", attributes: .concurrent), invalidateAfterFirstRead: true)
+        nfcSession = NFCNDEFReaderSession(delegate: self, queue: DispatchQueue(label: "queueName", attributes: .concurrent), invalidateAfterFirstRead: false)
         
         // then setup a new session
         if let instruction = instruction {
