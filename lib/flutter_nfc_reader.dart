@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 
 enum NFCStatus {
@@ -60,7 +61,11 @@ class FlutterNfcReader {
 
     final NfcData result = NfcData.fromMap(data);
 
-    await _channel.invokeMethod('NfcStop');
+    //Android needs to be stopped manually by this command
+    //IOS stops itself, after a scan
+    if (Platform.isAndroid) {
+      await _channel.invokeMethod('NfcStop');
+    }
 
     return result;
   }
