@@ -22,11 +22,6 @@ class _MyAppState extends State<MyApp> {
   Future<void> startNFC() async {
     NfcData response;
 
-    setState(() {
-      _nfcData = NfcData();
-      _nfcData.status = NFCStatus.reading;
-    });
-
     print('NFC: Scan started');
 
     try {
@@ -34,27 +29,6 @@ class _MyAppState extends State<MyApp> {
       response = await FlutterNfcReader.read;
     } on PlatformException {
       print('NFC: Scan stopped exception');
-    }
-    setState(() {
-      _nfcData = response;
-    });
-  }
-
-  Future<void> stopNFC() async {
-    NfcData response;
-
-    try {
-      print('NFC: Stop scan by user');
-      response = await FlutterNfcReader.stop;
-    } on PlatformException {
-      print('NFC: Stop scan exception');
-      response = NfcData(
-        id: '',
-        content: '',
-        error: 'NFC scan stop exception',
-        statusMapper: '',
-      );
-      response.status = NFCStatus.error;
     }
 
     setState(() {
@@ -102,12 +76,6 @@ class _MyAppState extends State<MyApp> {
                     child: Text('Start NFC'),
                     onPressed: () {
                       startNFC();
-                    },
-                  ),
-                  new RaisedButton(
-                    child: Text('Stop NFC'),
-                    onPressed: () {
-                      stopNFC();
                     },
                   ),
                 ],
