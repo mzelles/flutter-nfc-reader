@@ -71,8 +71,7 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler,  Nfc
             }
             "NfcStop" -> {
                 stopNFC()
-                val data = mapOf(kId to "", kContent to "", kError to "", kStatus to "stopped")
-                result.success(data)
+                result.success(null)
             }
             else -> {
                 result.notImplemented()
@@ -104,15 +103,16 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler,  Nfc
 
     // handle discovered NDEF Tags
     override fun onTagDiscovered(tag: Tag?) {
-        // convert tag to NDEF tag
+        // Convert Tag to NDEF
         val ndef = Ndef.get(tag)
-        // ndef will be null if the discovered tag is not a NDEF tag
-        // read NDEF message
+        
+        // NDEF will be "null", if the tag is not a NDEF-Tag
         ndef?.connect()
+
+        // Read Payload from NFC Tag
         val message = ndef?.ndefMessage
                           ?.toByteArray()
                           ?.toString(Charset.forName("UTF-8")) ?: ""
-        //val id = tag?.id?.toString(Charset.forName("ISO-8859-1")) ?: ""
         val id = bytesToHexString(tag?.id) ?: ""
         ndef?.close()
         if (message != null) {
@@ -122,7 +122,7 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler,  Nfc
     }
 
     private fun bytesToHexString(src: ByteArray?): String? {
-        val stringBuilder = StringBuilder("0x")
+        val stringBuilder = StringBuilder("")
         if (src == null || src.isEmpty()) {
             return null
         }
