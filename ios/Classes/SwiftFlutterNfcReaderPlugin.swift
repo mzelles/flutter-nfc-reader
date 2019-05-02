@@ -55,9 +55,8 @@ extension SwiftFlutterNfcReaderPlugin {
     
     func disableNFC() {
         nfcSession?.invalidate()
-        let data = [kId: "", kContent: "", kError: "", kStatus: "stopped"]
 
-        resulter?(data)
+        resulter?(nil)
         resulter = nil
     }
 
